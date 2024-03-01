@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+
+    
+</head>
+<body>
+    <div class="container">
+        <a href="/main">return</a>
+
+        <h1>Welcome to the Admin Page</h1>
+    <p>Here, you can perform administrative tasks.</p>
+    <form action="/admin/createItem" method="POST" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        
+        <label for="images">Images:</label>
+        <input type="file" id="image1" name="images" accept="image/*" multiple required>
+        
+        <button type="submit">Create Item</button>
+    </form>
+
+    <% if (items && items.length > 0) { %>
+        <ul>
+            <% items.forEach(item => { %>
+                <li>
+                    <h3><%= item.name %></h3>
+                    <p><%= item.description %></p>
+                    <!-- Delete button -->
+                    <form action="/admin/deleteItem/<%= item._id %>" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <!-- Edit button -->
+                    <form action="/admin/editItem/<%= item._id %>" method="GET">
+                        <button type="submit">Edit</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No items found.</p>
+    <% } %>
+    </div>
+    
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock News</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+    <style>
+        .article {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .article img {
+            float: left;
+            margin-right: 10px;
+            width: 400px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .article h2 {
+            margin-top: 0;
+        }
+
+        .article p {
+            margin: 5px 0;
+        }
+
+        .article .source {
+            font-style: italic;
+        }
+        .container{
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand mx-auto" href="index.html">OPEN STOCK PRICES  <i class="fa-solid fa-shrimp"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto custom-center">
+            <li class="nav-item active">
+              <a class="nav-link" href="/main">Main page</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/stock">Stock prices</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  href="/stock-news">Stock News</a>
+            </li>
+                
+
+            </ul>
+
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <button id="logoutButton" class="btn btn-light">Logout</button>
+            </li>
+          </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Stock News</h1>
+            <% articles.forEach(article => { %>
+                <div class="article">
+                    <% if (article.urlToImage) { %>
+                        <img src="<%= article.urlToImage %>" alt="<%= article.title %>">
+                    <% } %>
+                    <h2><%= article.title %></h2>
+                    <p><%= article.description %></p>
+                    <p class="source">Source: <%= article.source.name %></p>
+                    <p>Published At: <%= new Date(article.publishedAt).toLocaleString() %></p>
+                    <a href="<%= article.url %>">Read More</a>
+                </div>
+            <% }); %>
+    </div>
+    <footer style="background-color: #f0f0f0; padding: 15px; text-align: center; bottom:0">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <p>&copy; 2024 OPEN STOCK PRICES. All rights reserved.</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="display: inline; margin-right: 10px;"><a href="#" style="text-decoration: none; color: #333;">Privacy Policy</a></li>
+                <li style="display: inline; margin-right: 10px;"><a href="#" style="text-decoration: none; color: #333;">Terms of Service</a></li>
+                <li style="display: inline;"><a href="#" style="text-decoration: none; color: #333;">Contact Us</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            fetch('/logout', {
+                method: 'GET',
+                credentials: 'same-origin' 
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    console.error('Logout failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout:', error);
+            });
+        });
+        </script>
+</body>
+</html>
